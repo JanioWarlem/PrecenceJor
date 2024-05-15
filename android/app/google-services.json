@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "986950434792",
+    "project_id": "presencejor",
+    "storage_bucket": "presencejor.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:986950434792:android:19dc94af8e15cf555d2e5d",
+        "android_client_info": {
+          "package_name": "com.example.presence_jor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "986950434792-8f0s3ivinjr6rl3rppk76v3110nl5o6m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVrQq8rlpksWNb9Ejgy96Ajj0TxnPB4VA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "986950434792-8f0s3ivinjr6rl3rppk76v3110nl5o6m.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "986950434792-13cnj6p68ll5kvq4gavcl24js6ls70gt.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.presenceJor"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
