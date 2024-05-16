@@ -74,7 +74,7 @@ class _LoginViewState extends State<LoginView> {
       body: Padding( 
           padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
             child: SingleChildScrollView( 
-              scrollDirection: Axis.horizontal,
+              scrollDirection: Axis.vertical,
               child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
