@@ -1,10 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:presence_jor/src/sample_feature/sample_item_list_view.dart';
 import 'package:presence_jor/src/settings/settings_view.dart';
 import 'package:presence_jor/src/view/cadastro_view.dart';
+import 'package:presence_jor/src/view/login_view.dart';
 
 import '../controller/login_controller.dart';
 
@@ -15,25 +14,56 @@ class HomeView extends StatefulWidget {
   @override
   State<HomeView> createState() => _HomeViewState();
 }
+class PaginaDestino {
+  final String label;
+  final Widget icon;
+  final Widget selectedIcon;
+  final Widget page;
+
+  const PaginaDestino(this.label, this.icon, this.selectedIcon, this.page);
+}
 
 class _HomeViewState extends State<HomeView> {
 
-  int _currentPageIndex = 0;
-  late PageController pc;
+  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
+
+  int screenIndex = 0;
+  late bool showNavigationDrawer;
+
+  void handleScreenChanged(int selectedScreen) {
+    setState(() {
+      screenIndex = selectedScreen;
+    });
+  }
+
+  void openDrawer() {
+    scaffoldKey.currentState!.openEndDrawer();
+  }
 
 
-  ///Lista de paginas de destino pra o navigatorBat
-  static const List<Widget> _widgetOptions = <Widget>[
-    HomeView(),
-    CadastrarView(),
-  ];
+  List<PaginaDestino> destinations = <PaginaDestino>[
+  const PaginaDestino(
+        'Login', 
+        Icon(Icons.home_outlined), 
+        Icon(Icons.home),
+        LoginView(),
+      ),
+  const PaginaDestino(
+        'set', 
+        Icon(Icons.format_paint_outlined), 
+        Icon(Icons.format_paint),
+        SampleItemListView(),
+      ),
+];
 
+///////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
   @override
   void initState() {
     super.initState();
-    pc = PageController(initialPage: _currentPageIndex);
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,7 +95,7 @@ class _HomeViewState extends State<HomeView> {
             ),
           ],
         ),
-        /*actions: [
+        actions: [
           IconButton(
             icon: const Icon(Icons.settings),
             onPressed: () {
@@ -85,66 +115,59 @@ class _HomeViewState extends State<HomeView> {
             },
           ),
         ],
-        */
-      
       ),
-      body: PageView(
-        controller: pc,
-        children: [
-          HomeView(),
-          CadastrarView(),
-        ],
+      
+      /*drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            UserAccountsDrawerHeader(
+              accountEmail: Text("janiowarlem@gmail.com"),
+              accountName: Text("Janio Warlem"),
+              currentAccountPicture: CircleAvatar(
+                child: Text("JW"),
+              ),
+            ),
+            ListTile(
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushNamed(context, 'sobre');
+              },
+              leading: Icon(Icons.info),
+              title: Text("Sobre"),
+            )
+          ]
+        ),
+      ),
+      */
 
-      ),
-      
-      //_widgetOptions.elementAt(_currentPageIndex),
-      
-    bottomNavigationBar: NavigationBar(
-        elevation: 10,
-        indicatorColor: Colors.indigo[900],
-        selectedIndex: _currentPageIndex,
-        onDestinationSelected: (int index) {
+
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: screenIndex,
+        onDestinationSelected: (int index){
           setState(() {
-            _currentPageIndex = index;
-            print(_currentPageIndex);
+            screenIndex = index;
           });
+          getNavPagina(index, context, destinations[index].label);
         },
-        destinations: [
-          NavigationDestination(
-            selectedIcon: Icon(Icons.home, color: Colors.white),
-            icon: Icon(Icons.home_outlined,),
-            label: 'Home',
-          ),
-          NavigationDestination(
-            selectedIcon: Icon(Icons.event_note, color: Colors.white),
-            icon: Icon(Icons.event_note_outlined),
-            label: 'Participações',
-          ),
-        ]
-        )
-
-
-
-
-      /*bottomNavigationBar: BottomNavigationBar(
-        type:BottomNavigationBarType.fixed,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.location_on),
-            label: 'Eventos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.school),
-            label: 'School',
-          ),
-        ],
-        selectedItemColor: const Color.fromARGB(255, 4, 0, 255),
-      ),*/
+        destinations: destinations.map(
+          (PaginaDestino destination) {
+            return NavigationDestination(
+              label: destination.label,
+              icon: destination.icon,
+              selectedIcon: destination.selectedIcon,
+              tooltip: destination.label,
+            );
+          },
+        ).toList(),
+        
+        ),
     );
-
   }
 }
+
+void getNavPagina(int index,  BuildContext context, String name){
+  Navigator.restorablePopAndPushNamed(context, name);
+}
+
+
