@@ -141,6 +141,7 @@ class _HomeViewState extends State<HomeView> {
       ),
       */
 
+    body: destinations[screenIndex].page,
 
       bottomNavigationBar: NavigationBar(
         selectedIndex: screenIndex,
@@ -148,7 +149,6 @@ class _HomeViewState extends State<HomeView> {
           setState(() {
             screenIndex = index;
           });
-          getNavPagina(index, context, destinations[index].label);
         },
         destinations: destinations.map(
           (PaginaDestino destination) {
