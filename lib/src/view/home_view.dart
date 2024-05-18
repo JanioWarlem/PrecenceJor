@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:presence_jor/src/sample_feature/sample_item_list_view.dart';
 import 'package:presence_jor/src/settings/settings_view.dart';
 import 'package:presence_jor/src/view/cadastro_view.dart';
+import 'package:presence_jor/src/view/eventos_view.dart';
 import 'package:presence_jor/src/view/login_view.dart';
 
 import '../controller/login_controller.dart';
@@ -42,18 +43,18 @@ class _HomeViewState extends State<HomeView> {
 
 
   List<PaginaDestino> destinations = <PaginaDestino>[
-  const PaginaDestino(
-        'Login', 
-        Icon(Icons.home_outlined), 
-        Icon(Icons.home),
-        LoginView(),
-      ),
-  const PaginaDestino(
-        'set', 
-        Icon(Icons.format_paint_outlined), 
-        Icon(Icons.format_paint),
-        SampleItemListView(),
-      ),
+    const PaginaDestino(
+          'incrições', 
+          Icon(Icons.home_outlined), 
+          Icon(Icons.home),
+          Eventos_view(),
+        ),
+    const PaginaDestino(
+          'Home', 
+          Icon(Icons.format_paint_outlined), 
+          Icon(Icons.format_paint),
+          SampleItemListView(),
+        ),
 ];
 
 ///////////////////////////////////////////////////////////////////
@@ -62,12 +63,14 @@ class _HomeViewState extends State<HomeView> {
   void initState() {
     super.initState();
   }
-
   
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
+        elevation: 10,
+        backgroundColor: Colors.amber,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -115,9 +118,10 @@ class _HomeViewState extends State<HomeView> {
             },
           ),
         ],
+      
       ),
       
-      /*drawer: Drawer(
+      drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
@@ -139,13 +143,30 @@ class _HomeViewState extends State<HomeView> {
           ]
         ),
       ),
-      */
+      
+  
+      body: Row(
+        children: [
+          if (showNavigationDrawer)
+            buildDrawerScaffold(), // Exibe o NavigationRail se a tela for grande
+          Expanded(
+            child: destinations[screenIndex].page,
+          ),
+        ],
+      ),
+      
 
-    body: destinations[screenIndex].page,
+      bottomNavigationBar: showNavigationDrawer ? 
+        null: 
+        buildBottomBarScaffold(),
 
-      bottomNavigationBar: NavigationBar(
+    );  
+  }
+
+Widget buildBottomBarScaffold() {
+    return  NavigationBar(
         selectedIndex: screenIndex,
-        onDestinationSelected: (int index){
+        onDestinationSelected: (int index) {
           setState(() {
             screenIndex = index;
           });
@@ -160,14 +181,54 @@ class _HomeViewState extends State<HomeView> {
             );
           },
         ).toList(),
-        
+      );
+  }
+
+  
+Widget buildDrawerScaffold() {
+    return SafeArea(
+        bottom: false,
+        top: false,
+        child: Row(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: NavigationRail(
+                minWidth: 50,
+                selectedIndex: screenIndex,
+                useIndicator: true,
+                onDestinationSelected: (int index) {
+                  setState(() {
+                    screenIndex = index;
+                  });
+                },
+                destinations: destinations.map(
+                  (PaginaDestino destination) {
+                    return NavigationRailDestination(
+                      label: Text(destination.label),
+                      icon: destination.icon,
+                      selectedIcon: destination.selectedIcon,
+                    );
+                  },
+                  ).toList(),
+              ),
+            ),
+            const VerticalDivider(thickness: 1, width: 1),
+          ]
         ),
     );
   }
-}
 
-void getNavPagina(int index,  BuildContext context, String name){
-  Navigator.restorablePopAndPushNamed(context, name);
-}
 
+
+
+
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    showNavigationDrawer = MediaQuery.of(context).size.width >= 500;
+  }
+
+}
 
