@@ -2,10 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:presence_jor/src/sample_feature/sample_item_list_view.dart';
 import 'package:presence_jor/src/settings/settings_view.dart';
-import 'package:presence_jor/src/view/cadastro_view.dart';
 import 'package:presence_jor/src/view/eventos_view.dart';
-import 'package:presence_jor/src/view/login_view.dart';
-
 import '../controller/login_controller.dart';
 
 class HomeView extends StatefulWidget {
@@ -218,10 +215,6 @@ Widget buildDrawerScaffold() {
         ),
     );
   }
-
-
-
-
 
 
   @override

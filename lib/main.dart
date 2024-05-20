@@ -1,3 +1,4 @@
+import 'package:device_preview/device_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
@@ -22,6 +23,10 @@ void main() async {
   // SettingsController for changes, then passes it further down to the
   // SettingsView.
   runApp(
-    MyApp(settingsController: settingsController),
+    DevicePreview(
+      enabled: true,
+      builder: (context) => MyApp(settingsController: settingsController),
+    ),
+    
   );
 }
