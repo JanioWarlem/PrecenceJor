@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+import 'dart:js_util';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -56,18 +58,41 @@ class _Eventos_view extends State<Eventos_view> {
             itemCount: data.size,
             itemBuilder: (context, index) {
               dynamic doc =  data.docs[index].data();
-              
-              var evento = Eventos.fromJson(doc.data());
-              //var dataDoEvento = evento.date(); // Converte para DateTime
-              var formattedDate = DateFormat('dd/MM/yyyy HH:mm').format(dataDoEvento); // Formata a data
-
-              return ListTile(
-                title: Text(doc['title']),
-                //subtitle:  Text('Data: $formattedDate'),
-                onTap: () {
-                  // Navegar para detalhes do evento ou editar evento
-                },
-              );
+      
+              return Card(
+                      color: const Color.fromARGB(255, 255, 255, 255),
+                      elevation: 3,
+                      child: ListTile(
+                        leading: CircleAvatar(
+                                    radius: 30,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Text((doc['date'] as Timestamp).toDate().day.toString()),
+                                        Divider(color: Colors.black, ),
+                                        Text((doc['date'] as Timestamp).toDate().month.toString()),
+                                      ],
+                                    )
+                                  ),
+                          hoverColor: Color.fromARGB(255, 188, 201, 236),
+                          title: Text(
+                                    doc['title'], 
+                                    style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20, 
+                                    ),
+                                  ),
+                          subtitle: Text(
+                                    doc['description'],
+                                    style: TextStyle(
+                                    color: const Color.fromARGB(255, 56, 56, 56)
+                                    ),
+                                  ), //(doc['date'] as Timestamp).toDate().hour.toString()
+                          onTap: () {
+                          // Navegar para detalhes do evento ou editar evento
+                          },
+                      )
+                    );
             },
           );
         },

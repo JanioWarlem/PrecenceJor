@@ -18,7 +18,7 @@ class Eventos {
     return Eventos(
       title: json['title'] as String,
       description: json['description'] as String,
-      date: json['date'] as DateTime,
+      date: (json['date'] as Timestamp).toDate(),
       location: json['location'] as String,
     );
   }
