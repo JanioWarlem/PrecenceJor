@@ -88,7 +88,7 @@ class _Eventos_view extends State<Eventos_view> {
                                     ),
                                   ), //(doc['date'] as Timestamp).toDate().hour.toString()
                           onTap: () {
-                            Eventos eventos = Eventos((doc['date'] as Timestamp).toDate().day.toString(), title: doc['title'], description: doc['description'], location:  doc['location']) ;
+                            Eventos eventos = Eventos(date: (doc['date']).toDate(), title: doc['title'], description: doc['description'], location:  doc['location']);
                             Navigator.pushNamed(
                               context,
                               'Confirmar_Presença',

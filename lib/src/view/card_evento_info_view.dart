@@ -28,18 +28,26 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
     final eventos = ModalRoute.of(context)!.settings.arguments as Eventos;
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-                  'Confirmar Presença',
-                  style: TextStyle(
-                    color: Colors.white
-                  ),
-                ),
-        actions: [
-          
-        ],
+    appBar: AppBar(
+        elevation: 10,
+        backgroundColor: Color.fromARGB(255, 41, 32, 165),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Center(
+              child: Text(
+                'Confirmar Presença',
+                style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color:  Color.fromARGB(255, 255, 250, 250)
+                    ),
+              ),
+            ),
+          ],
+        ),
       ),
-
+      
 
     body: Text('Titulo ${eventos.title}\n ${eventos.description}')
 
