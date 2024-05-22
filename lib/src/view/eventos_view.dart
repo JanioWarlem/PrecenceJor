@@ -1,11 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
-import 'dart:js_util';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
 import 'package:presence_jor/src/model/eventos.dart';
+import 'package:presence_jor/src/view/card_evento_info_view.dart';
 
 
 class Eventos_view extends StatefulWidget {
@@ -65,13 +63,12 @@ class _Eventos_view extends State<Eventos_view> {
                       child: ListTile(
                         leading: CircleAvatar(
                                     radius: 30,
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text((doc['date'] as Timestamp).toDate().day.toString()),
-                                        Divider(color: Colors.black, ),
-                                        Text((doc['date'] as Timestamp).toDate().month.toString()),
-                                      ],
+                                    backgroundColor: index %2 == 0? Colors.indigo[900]: Colors.black,
+                                    child: Center(
+                                        child: Text(
+                                          (doc['date'] as Timestamp).toDate().day.toString(),
+                                          style: TextStyle(color: Colors.white, fontSize: 25),
+                                          ),
                                     )
                                   ),
                           hoverColor: Color.fromARGB(255, 188, 201, 236),
@@ -80,16 +77,23 @@ class _Eventos_view extends State<Eventos_view> {
                                     style: TextStyle(
                                     color: Colors.black,
                                     fontSize: 20, 
+                                    overflow: TextOverflow.ellipsis
                                     ),
                                   ),
                           subtitle: Text(
                                     doc['description'],
                                     style: TextStyle(
-                                    color: const Color.fromARGB(255, 56, 56, 56)
+                                    color: const Color.fromARGB(255, 56, 56, 56),
+                                    overflow: TextOverflow.ellipsis
                                     ),
                                   ), //(doc['date'] as Timestamp).toDate().hour.toString()
                           onTap: () {
-                          // Navegar para detalhes do evento ou editar evento
+                            Eventos eventos = Eventos((doc['date'] as Timestamp).toDate().day.toString(), title: doc['title'], description: doc['description'], location:  doc['location']) ;
+                            Navigator.pushNamed(
+                              context,
+                              'Confirmar_Presença',
+                              arguments: eventos
+                            );
                           },
                       )
                     );

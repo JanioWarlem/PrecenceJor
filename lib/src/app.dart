@@ -3,6 +3,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:presence_jor/src/controller/AuthGuard.dart';
 import 'package:presence_jor/src/view/cadastro_view.dart';
+import 'package:presence_jor/src/view/card_evento_info_view.dart';
 import 'package:presence_jor/src/view/home_view.dart';
 import 'package:presence_jor/src/view/login_view.dart';
 
@@ -81,6 +82,8 @@ class MyApp extends StatelessWidget {
                     return AuthGuard(child: HomeView());
                   case CadastrarView.routeName:
                     return const CadastrarView();
+                  case Card_Evento_Info_View.routeName:
+                    return const Card_Evento_Info_View();
                   case SampleItemListView.routeName:
                   default:
                     return const LoginView();
