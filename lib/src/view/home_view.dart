@@ -41,13 +41,13 @@ class _HomeViewState extends State<HomeView> {
 
   List<PaginaDestino> destinations = <PaginaDestino>[
     const PaginaDestino(
-          'incrições', 
+          'Home', 
           Icon(Icons.home_outlined), 
           Icon(Icons.home),
           Eventos_view(),
         ),
     const PaginaDestino(
-          'Home', 
+          'Confirmções', 
           Icon(Icons.format_paint_outlined), 
           Icon(Icons.format_paint),
           SampleItemListView(),
