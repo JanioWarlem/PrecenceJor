@@ -1,14 +1,13 @@
-import 'dart:html';
-
 import 'package:geolocator/geolocator.dart';
 
-class getLocationUser{
+class GetLocationUser{
   double lat = 0;
   double long = 0;
   String erro = '';
 
-  Future<getLocationUser>  getLocationUserAtual(){
-    return getPosicao();
+  Future <GetLocationUser> getLocationUserAtual() async{
+    await getPosicao();
+    return this;
   }
 
   getPosicao() async{
@@ -41,7 +40,7 @@ class getLocationUser{
       return Future.error("Por favor, autorizeo acesso a localização");
     }
 
-    return await Geolocator.getCurrentPosition();
+    return await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
   }
   
 }

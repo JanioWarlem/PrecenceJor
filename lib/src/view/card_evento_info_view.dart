@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
 import 'package:presence_jor/src/controller/local_user_controller.dart';
@@ -20,12 +19,12 @@ class Card_Evento_Info_View extends StatefulWidget {
 
 class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
   final EventosController controller = EventosController();
-  late Future<getLocationUser> _localization;
+  late Future<GetLocationUser> _localization;
 
   @override
   void initState() {
     super.initState();
-    //_localization = getLocationUserAtual();
+    _localization = GetLocationUser().getLocationUserAtual();
   }
 
   @override
@@ -87,13 +86,23 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                               ],
                               ),
                             Center (
-                                child: FutureBuilder<getLocationUser>(
+                                child: FutureBuilder<GetLocationUser>(
                                   future: _localization,
-                                  builder: (context, snapshot){
-                                    final local = context.watch<getLocationUser>();
-                                    String mensagem =  local.erro == '' ? 'latitude ${local.lat} | ${local.long}': local.erro;
-                                    return Center(child: Text(mensagem),);
-                                  },
+                                  builder:  (context, snapshot) {
+                                        if (snapshot.connectionState == ConnectionState.waiting) {
+                                          return CircularProgressIndicator();
+                                        } else if (snapshot.hasError) {
+                                          return Text('Erro: ${snapshot.error}');
+                                        } else if (snapshot.hasData) {
+                                          final local = snapshot.data!;
+                                          String mensagem = local.erro.isEmpty
+                                              ? 'Latitude: ${local.lat} | Longitude: ${local.long}'
+                                              : local.erro;
+                                          return Text(mensagem);
+                                        } else {
+                                          return Text('Nenhum dado disponível');
+                                        }
+                                  }
                               )
                             )
                           ],
