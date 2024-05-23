@@ -25,7 +25,7 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
   @override
   void initState() {
     super.initState();
-    _localization = getLocationUserAtual();
+    //_localization = getLocationUserAtual();
   }
 
   @override
