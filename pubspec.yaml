@@ -10,6 +10,7 @@ environment:
   sdk: '>=3.3.3 <4.0.0'
 
 dependencies:
+  cached_network_image: ^3.3.1
   cloud_firestore: ^4.17.3
   device_preview: ^1.1.0
   firebase_auth: ^4.19.5
@@ -21,9 +22,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   geolocator: ^12.0.0
-  google_maps_flutter: ^2.6.1
-  google_maps_flutter_web: ^0.5.7
-  intl: ^0.18.1
+  http: ^1.2.1
   provider: ^6.1.2
 
 dev_dependencies:
@@ -41,3 +40,4 @@ flutter:
   assets:
     # Add assets from the images directory to the application.
     - assets/images/
+    - assets/.env

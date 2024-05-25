@@ -1,8 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
-//import 'package:google_maps_flutter_web/google_maps_flutter_web.dart';
+
+//https://maps.googleapis.com/maps/api/staticmap?center={(latitude, longitude)}&zoom=16&ize={horizontal_value}x{vertical_value}        &key=YOUR_API_KEY
+//500x400
+
 
 
 import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
@@ -21,14 +23,6 @@ class Card_Evento_Info_View extends StatefulWidget {
 class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
   final EventosController controller = EventosController();
   late Future<GetLocationUser> _localization;
-  late GoogleMapController mapController;
-
-
-  final LatLng _center = const LatLng(-33.86, 151.20);
-
-  void _onMapCreated(GoogleMapController controller) {
-          mapController = controller;
-        }
 
   @override
   void initState() {
@@ -107,19 +101,19 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                                           String mensagem = local.erro.isEmpty
                                               ? 'Latitude: ${local.lat} | Longitude: ${local.long}'
                                               : local.erro;
-                                          return  GoogleMap(
-                                              onMapCreated: _onMapCreated,
-                                              initialCameraPosition: CameraPosition(
-                                                target: _center,
-                                                zoom: 11.0,
-                                              ),
-                                            );
+                                            return Text(mensagem);
+                                        
                                         } else {
                                           return Text('Nenhum dado disponível');
                                         }
                                   }
                               )
-                            )
+                            ),
+                            Container(
+                                width: 200.0,
+                                height: 200.0,
+                                child: null
+                              ),
                             
                           
                           ],
