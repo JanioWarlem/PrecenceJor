@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
 import 'package:presence_jor/src/model/eventos.dart';
-import 'package:presence_jor/src/view/card_evento_info_view.dart';
 
 
 class Eventos_view extends StatefulWidget {

@@ -1,16 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
-
-//https://maps.googleapis.com/maps/api/staticmap?center={(latitude, longitude)}&zoom=16&ize={horizontal_value}x{vertical_value}        &key=YOUR_API_KEY
-//500x400
+import 'package:cached_network_image/cached_network_image.dart';
 
 
 
 import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
 import 'package:presence_jor/src/controller/local_user_controller.dart';
+import 'package:presence_jor/src/model/google_maps_static_api.dart';
 import 'package:presence_jor/src/model/eventos.dart';
-
 
 class Card_Evento_Info_View extends StatefulWidget {
   const Card_Evento_Info_View({super.key});
@@ -21,8 +19,10 @@ class Card_Evento_Info_View extends StatefulWidget {
 }
 
 class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
+
   final EventosController controller = EventosController();
   late Future<GetLocationUser> _localization;
+
 
   @override
   void initState() {
@@ -33,6 +33,7 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
   @override
   Widget build(BuildContext context) {
     final eventos = ModalRoute.of(context)!.settings.arguments as Eventos;
+    final mapUrl = GoogleMapStatic();
 
     return Scaffold(
     appBar: AppBar(
@@ -88,9 +89,11 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                                 ),
                               ],
                               ),
+                            //
+                            //Carregamento do mapa com local do user.
                             Center (
-                                child: FutureBuilder<GetLocationUser>(
-                                  future: _localization,
+                                child: FutureBuilder<String>(
+                                  future: mapUrl.imageUrl(),
                                   builder:  (context, snapshot) {
                                         if (snapshot.connectionState == ConnectionState.waiting) {
                                           return CircularProgressIndicator();
@@ -98,23 +101,14 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                                           return Text('Erro: ${snapshot.error}');
                                         } else if (snapshot.hasData) {
                                           final local = snapshot.data!;
-                                          String mensagem = local.erro.isEmpty
-                                              ? 'Latitude: ${local.lat} | Longitude: ${local.long}'
-                                              : local.erro;
-                                            return Text(mensagem);
-                                        
+                                            return  Image.network(snapshot.data!);
                                         } else {
                                           return Text('Nenhum dado disponível');
                                         }
                                   }
                               )
                             ),
-                            Container(
-                                width: 200.0,
-                                height: 200.0,
-                                child: null
-                              ),
-                            
+                          
                           
                           ],
 
