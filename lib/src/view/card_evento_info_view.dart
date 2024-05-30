@@ -1,14 +1,16 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
+import 'dart:io';
 
+import 'package:camera/camera.dart';
+import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/material.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-
 
 
 import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
 import 'package:presence_jor/src/controller/local_user_controller.dart';
 import 'package:presence_jor/src/model/google_maps_static_api.dart';
 import 'package:presence_jor/src/model/eventos.dart';
+import 'package:http/http.dart' as http;
+
 
 class Card_Evento_Info_View extends StatefulWidget {
   const Card_Evento_Info_View({super.key});
@@ -21,19 +23,17 @@ class Card_Evento_Info_View extends StatefulWidget {
 class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
 
   final EventosController controller = EventosController();
-  late Future<GetLocationUser> _localization;
-
-
+  late File arquivoImg;
+  
   @override
   void initState() {
     super.initState();
-    _localization = GetLocationUser().getLocationUserAtual();
   }
 
   @override
   Widget build(BuildContext context) {
     final eventos = ModalRoute.of(context)!.settings.arguments as Eventos;
-    final mapUrl = GoogleMapStatic();
+    
 
     return Scaffold(
     appBar: AppBar(
@@ -62,7 +62,7 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
       itemBuilder: ((context, index) {
 
         return Padding(
-                  padding: EdgeInsets.all(20),
+                  padding: EdgeInsets.all(30),
                   child: Column(
                           children: [
                             Column(
@@ -93,14 +93,13 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                             //Carregamento do mapa com local do user.
                             Center (
                                 child: FutureBuilder<String>(
-                                  future: mapUrl.imageUrl(),
+                                  future: imageUrl(),
                                   builder:  (context, snapshot) {
                                         if (snapshot.connectionState == ConnectionState.waiting) {
                                           return CircularProgressIndicator();
                                         } else if (snapshot.hasError) {
                                           return Text('Erro: ${snapshot.error}');
                                         } else if (snapshot.hasData) {
-                                          final local = snapshot.data!;
                                             return  Image.network(snapshot.data!);
                                         } else {
                                           return Text('Nenhum dado disponível');
@@ -108,6 +107,14 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                                   }
                               )
                             ),
+                            OutlinedButton.icon(
+                              onPressed: (){
+                                Navigator.push(context, CameraCamera(onFile: ((file) => print(file))));
+
+                              },
+                              icon: Icon(Icons.check_circle, color: Colors.green[800],),
+                              label: Text('Validar participação')
+                            )
                           
                           
                           ],
@@ -118,5 +125,18 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
     )
     
     );
+    
   }
 }
+Future<String> imageUrl() async {
+    GetLocationUser _localization =  await GetLocationUser().getLocationUserAtual();
+
+    final url = GoogleMapStatic.buildMapUrl('${_localization.lat},${_localization.long}');
+    final response = await http.get(Uri.parse(url));
+
+    if (response.statusCode == 200) {
+      return url;
+    } else {
+      throw Exception('Failed to load image');
+    }
+  }
