@@ -13,7 +13,7 @@ import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
 /// The Widget that configures your application.
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget{
   const MyApp({
     super.key,
     required this.settingsController,
@@ -64,6 +64,7 @@ class MyApp extends StatelessWidget {
           theme: ThemeData.light(),
           darkTheme: ThemeData.dark(),
           themeMode: settingsController.themeMode,
+
 
           // Define a function to handle named routes in order to support
           // Flutter web url navigation and deep linking.

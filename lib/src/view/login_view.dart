@@ -175,7 +175,7 @@ class _LoginViewState extends State<LoginView> {
                 SizedBox(height: 15),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    minimumSize: Size(200, 40),
+                    minimumSize: Size(400, 40),
                     backgroundColor: const Color.fromARGB(255, 0, 0, 0),
                   ),
                   onPressed: () {
