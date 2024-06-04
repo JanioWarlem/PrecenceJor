@@ -133,7 +133,7 @@ class _HomeViewState extends State<HomeView> {
             ListTile(
               onTap: (){
                 Navigator.pop(context);
-                Navigator.pushNamed(context, 'precence_jor');
+                Navigator.pushNamed(context, 'politicas');
               },
               leading: Icon(Icons.info),
               title: Text("Politicas de Privacidade"),

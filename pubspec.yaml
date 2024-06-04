@@ -10,12 +10,10 @@ environment:
   sdk: '>=3.3.3 <4.0.0'
 
 dependencies:
-  camera: ^0.10.6
-  camera_camera: ^3.0.0
-  cloud_firestore: ^4.17.3
-  device_preview: ^1.1.0
-  firebase_auth: ^4.19.5
-  firebase_core: ^2.31.0
+  cloud_firestore: ^5.0.0
+  device_preview: ^ 1.2.0
+  firebase_auth: ^5.0.0
+  firebase_core: ^3.0.0
   flutter:
     sdk: flutter
   flutter_dotenv: ^5.1.0
@@ -31,7 +29,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
 
 flutter:
   uses-material-design: true

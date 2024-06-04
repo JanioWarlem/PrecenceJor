@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PoliticaPrivacidadeView extends StatefulWidget {
   const PoliticaPrivacidadeView({super.key});
-    static const routeName = 'precence_jor';
+    static const routeName = 'politicas';
 
 
   @override
