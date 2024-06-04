@@ -6,6 +6,7 @@ import 'package:presence_jor/src/view/cadastro_view.dart';
 import 'package:presence_jor/src/view/card_evento_info_view.dart';
 import 'package:presence_jor/src/view/home_view.dart';
 import 'package:presence_jor/src/view/login_view.dart';
+import 'package:presence_jor/src/view/politica_privacidade_view.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
 import 'sample_feature/sample_item_list_view.dart';
@@ -85,6 +86,8 @@ class MyApp extends StatelessWidget{
                     return const CadastrarView();
                   case Card_Evento_Info_View.routeName:
                     return const Card_Evento_Info_View();
+                  case PoliticaPrivacidadeView.routeName:
+                    return const PoliticaPrivacidadeView();
                   case SampleItemListView.routeName:
                   default:
                     return const LoginView();

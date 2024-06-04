@@ -124,19 +124,19 @@ class _HomeViewState extends State<HomeView> {
           padding: EdgeInsets.zero,
           children: [
             UserAccountsDrawerHeader(
-              accountEmail: Text("janiowarlem@gmail.com"),
-              accountName: Text("Janio Warlem"),
+              accountEmail: Text("your@gmail.com"),
+              accountName: Text("your name"),
               currentAccountPicture: CircleAvatar(
-                child: Text("JW"),
+                child: Text("YN"),
               ),
             ),
             ListTile(
               onTap: (){
                 Navigator.pop(context);
-                Navigator.pushNamed(context, 'sobre');
+                Navigator.pushNamed(context, 'precence_jor');
               },
               leading: Icon(Icons.info),
-              title: Text("Sobre"),
+              title: Text("Politicas de Privacidade"),
             )
           ]
         ),
