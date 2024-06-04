@@ -1,4 +1,3 @@
-import 'package:camera_camera/camera_camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
