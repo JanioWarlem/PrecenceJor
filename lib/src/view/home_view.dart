@@ -137,10 +137,20 @@ class _HomeViewState extends State<HomeView> {
               },
               leading: Icon(Icons.info),
               title: Text("Politicas de Privacidade"),
+            ),
+            ListTile(
+              onTap: (){
+                Navigator.pop(context);
+                Navigator.pushNamed(context, 'ConfigUserView');
+              },
+              leading: Icon(Icons.info),
+              title: Text("Configurações"),
             )
           ]
         ),
       ),
+      
+
       
   
       body: Row(
