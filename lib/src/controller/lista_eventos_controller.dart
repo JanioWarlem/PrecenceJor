@@ -16,12 +16,12 @@ class EventosController {
     }
   }
 
-  //Listar todas as tarefas do usuário logado
+  //Listar eventos
   Stream<QuerySnapshot> listar() {
     return FirebaseFirestore.instance.collection('eventos').snapshots();
   }
 
-  //Excluir tarefa
+  //Excluir evento
   excluir(context, id) {
     FirebaseFirestore.instance
         .collection('eventos')
@@ -31,7 +31,7 @@ class EventosController {
         .catchError((e) => erro(context, 'Não foi possível excluir a evento.'));
   }
 
-  //Atualizar uma tarefa
+  //Atualizar uma evento
   atualizar(context, id, Eventos t){
 
     FirebaseFirestore.instance.collection('evento')

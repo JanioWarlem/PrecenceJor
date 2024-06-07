@@ -18,7 +18,6 @@ class _LoginViewState extends State<LoginView> {
   var txtEmail = TextEditingController();
   var txtSenha = TextEditingController();
   var txtEmailEsqueceuSenha = TextEditingController();
-  LoginController loginFed = LoginController();
 
   @override
   void initState() {

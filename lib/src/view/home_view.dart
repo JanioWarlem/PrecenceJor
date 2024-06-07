@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:presence_jor/src/sample_feature/sample_item_list_view.dart';
@@ -23,10 +24,12 @@ class PaginaDestino {
 
 class _HomeViewState extends State<HomeView> {
 
+  LoginController user = LoginController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
   int screenIndex = 0;
   late bool showNavigationDrawer;
+  
 
   void handleScreenChanged(int selectedScreen) {
     setState(() {
@@ -123,13 +126,29 @@ class _HomeViewState extends State<HomeView> {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            UserAccountsDrawerHeader(
-              accountEmail: Text("your@gmail.com"),
-              accountName: Text("your name"),
-              currentAccountPicture: CircleAvatar(
-                child: Text("YN"),
-              ),
+
+            FutureBuilder<QuerySnapshot>(
+              future: user.getDataUser(user.idUsuarioLogado()),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Erro: ${snapshot.error}'));
+                } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  print(user.idUsuarioLogado());
+                  return Center(child: Text('Usuário não encontrado'));
+                } else {
+                  var userData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                  return UserAccountsDrawerHeader(
+                          accountEmail: Text(userData['email']),
+                          accountName: Text(userData['nome']),
+                          currentAccountPicture: CircleAvatar(
+                            child: Text(userData['nome'].length >= 2 ?   userData['nome'].substring(0, 2).toUpperCase() : userData['nome'])),
+                          );
+                }
+              },
             ),
+
             ListTile(
               onTap: (){
                 Navigator.pop(context);
@@ -141,7 +160,7 @@ class _HomeViewState extends State<HomeView> {
             ListTile(
               onTap: (){
                 Navigator.pop(context);
-                Navigator.pushNamed(context, 'ConfigUserView');
+                Navigator.pushNamed(context, 'configuracoes');
               },
               leading: Icon(Icons.info),
               title: Text("Configurações"),

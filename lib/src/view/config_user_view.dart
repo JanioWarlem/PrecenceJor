@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ConfigUserView extends StatefulWidget {
   const ConfigUserView({super.key});
-    static const routeName = 'politicas';
+    static const routeName = 'configuracoes';
 
 
   @override
@@ -13,7 +13,7 @@ class _ConfigUserView extends State<ConfigUserView> {
   var title1 = 'Presence';
   var title2 = 'Jor';
   var txtEmail = TextEditingController();
-  String idUser = idUsuarioLogado();
+  //String idUser = idUsuarioLogado();
 
 
   @override

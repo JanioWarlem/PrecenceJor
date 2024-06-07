@@ -10,7 +10,7 @@ class LoginController extends ChangeNotifier{
   //
   // CRIAR CONTA de um usuário no serviço Firebase Authentication
   //
-  criarConta(context, nome, email, senha) {
+  criarConta(context, nome, email, senha, codigo, curso) {
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(
       email: email,
@@ -25,6 +25,9 @@ class LoginController extends ChangeNotifier{
           {
             "uid": resultado.user!.uid,
             "nome": nome,
+            "codigo": codigo,
+            "email": email,
+            "curso": curso
           },
         );
 
@@ -94,7 +97,13 @@ class LoginController extends ChangeNotifier{
   idUsuarioLogado() {
     return FirebaseAuth.instance.currentUser!.uid;
   }
-
+  
+  Future<QuerySnapshot> getDataUser(String uid) {
+    return FirebaseFirestore.instance
+        .collection('usuarios')
+        .where('uid', isEqualTo: uid)
+        .get();
+  }
   
   loginFederacao() {
     GoogleAuthProvider googleProvider = GoogleAuthProvider();
