@@ -1,19 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:googleapis/drive/v3.dart' as drive;
 import 'package:flutter/widgets.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:presence_jor/src/sample_feature/sample_item_list_view.dart';
 import 'package:presence_jor/src/settings/settings_view.dart';
 import 'package:presence_jor/src/view/eventos_view.dart';
 import '../controller/login_controller.dart';
 
-class HomeView extends StatefulWidget {
-  const HomeView({super.key});
-  static const routeName = 'Home';
+class HomeAdmView extends StatefulWidget {
+  const HomeAdmView({super.key});
+  static const routeName = 'Home_adim';
 
   @override
-  State<HomeView> createState() => _HomeViewState();
+  State<HomeAdmView> createState() => _HomeAdmViewState();
 }
 class PaginaDestino {
   final String label;
@@ -24,12 +22,7 @@ class PaginaDestino {
   const PaginaDestino(this.label, this.icon, this.selectedIcon, this.page);
 }
 
-final _googleSignIn = GoogleSignIn(
-  scopes: <String>[drive.DriveApi.driveFileScope],
-  clientId: '986950434792-8f0s3ivinjr6rl3rppk76v3110nl5o6m.apps.googleusercontent.com',
-);
-
-class _HomeViewState extends State<HomeView> {
+class _HomeAdmViewState extends State<HomeAdmView> {
 
   LoginController user = LoginController();
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -57,9 +50,9 @@ class _HomeViewState extends State<HomeView> {
           Eventos_view(),
         ),
     const PaginaDestino(
-          'Presenças', 
-          Icon(Icons.pin_drop_outlined), 
-          Icon(Icons.pin_drop),
+          'Criar evento', 
+          Icon(Icons.add_box_outlined), 
+          Icon(Icons.add_box),
           SampleItemListView(),
         ),
 ];
@@ -155,15 +148,6 @@ class _HomeViewState extends State<HomeView> {
                 }
               },
             ),
-            ListTile(
-              onTap: (){
-                _googleSignInInit();
-                _handleSignIn();
-              },
-              leading: Icon(Icons.info),
-              title: Text("Driver"),
-            ),
-
 
 
 
@@ -271,25 +255,4 @@ Widget buildDrawerScaffold() {
     showNavigationDrawer = MediaQuery.of(context).size.width >= 500;
   }
 
-}
-
-
-
-Future<void> _googleSignInInit() async {
-  try {
-    await _googleSignIn.signInSilently();
-  } catch (e) {
-    print('Erro ao fazer login automaticamente: $e');
-  }
-}
-
-Future<void> _handleSignIn() async {
-  
-  try {
-    await _googleSignIn.signIn();
-  } catch (e) {
-    print('Erro ao fazer login: $e');
-  } finally {
-    
-  }
 }

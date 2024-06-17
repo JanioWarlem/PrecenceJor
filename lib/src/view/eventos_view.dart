@@ -43,7 +43,7 @@ class _Eventos_view extends State<Eventos_view> {
         stream: controller.listar(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasError) {
-            return Center(child: Text('Erro ao carregar eventos.'));
+            return Center(child: Text('Erro ao carregar eventos. ${snapshot.hasError}'));
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());

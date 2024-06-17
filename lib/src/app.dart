@@ -5,6 +5,7 @@ import 'package:presence_jor/src/controller/AuthGuard.dart';
 import 'package:presence_jor/src/view/cadastro_view.dart';
 import 'package:presence_jor/src/view/card_evento_info_view.dart';
 import 'package:presence_jor/src/view/config_user_view.dart';
+import 'package:presence_jor/src/view/home_adm_view.dart';
 import 'package:presence_jor/src/view/home_view.dart';
 import 'package:presence_jor/src/view/login_view.dart';
 import 'package:presence_jor/src/view/politica_privacidade_view.dart';
@@ -87,6 +88,8 @@ class MyApp extends StatelessWidget{
                     return const CadastrarView();
                   case ConfigUserView.routeName:
                     return ConfigUserView();
+                  case HomeAdmView.routeName:
+                    return HomeAdmView();
                   case Card_Evento_Info_View.routeName:
                     return const Card_Evento_Info_View();
                   case PoliticaPrivacidadeView.routeName:

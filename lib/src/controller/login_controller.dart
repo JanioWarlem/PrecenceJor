@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:presence_jor/src/view/home_adm_view.dart';
 import 'package:presence_jor/src/view/login_view.dart';
 
 import '../view/util.dart';
@@ -50,16 +51,33 @@ class LoginController extends ChangeNotifier{
   }
 
   //
-  // LOGIN de usuário a partir do provedor Email/Senha
+  // LOGIN de usuário a partir do provedor Email/Senha e redireciona para dele adm ou comum
   //
   login(context, email, senha) {
     FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: senha)
         .then((resultado) {
-          
-      sucesso(context, 'Usuário autenticado com sucesso!');
-      Navigator.restorablePopAndPushNamed(context, HomeView.routeName);
-      //Navigator.pushNamed(context, 'principal');
+
+        FirebaseFirestore.instance
+          .collection('usuarios')
+          .where('uid', isEqualTo: LoginController().idUsuarioLogado())
+          .get()
+          .then((QuerySnapshot querySnapshot) {
+            if (querySnapshot.docs.isNotEmpty) {
+              var docSnapshot = querySnapshot.docs.first;
+              var data = docSnapshot.data() as Map<String, dynamic>;
+              var isAdm = data['isAdm'];
+                if(isAdm.toString() == "true"){
+                  Navigator.restorablePopAndPushNamed(context, HomeAdmView.routeName);
+                }else{
+                  Navigator.restorablePopAndPushNamed(context, HomeView.routeName);
+                }
+            }
+            }).catchError((error) {
+            // Caso ocorra algum erro na consulta
+            print("Erro ao consultar o Firestore: $error");
+          });
+        sucesso(context, 'Usuário autenticado com sucesso!');
 
     }).catchError((e) {
       switch (e.code) {
