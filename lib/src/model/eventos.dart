@@ -6,13 +6,15 @@ class Eventos {
   final DateTime date;
   final String location;
   Map<String, dynamic> inscritos; // Campo para inscrições
+  final GeoPoint geoLocation;
 
   Eventos({
     required this.title,
     required this.description,
     required this.date,
     required this.location,
-    this.inscritos = const {}, // Inicializa como um mapa vazio
+    this.inscritos = const {},
+    required this.geoLocation,
   });
 
   // Transformar um JSON em um objeto
@@ -23,10 +25,11 @@ class Eventos {
       date: (json['date'] as Timestamp).toDate(),
       location: json['location'] as String,
       inscritos: json['inscritos'] as Map<String, dynamic>? ?? {}, // Desserializar inscrições ou inicializar como vazio
+      geoLocation: json['geoLocation'] as GeoPoint,
     );
   }
 
-  // Transformar um objeto em JSON
+  //Transformar um objeto em JSON
   Map<String, dynamic> toJson() {
     return {
       'title': title,
@@ -34,6 +37,7 @@ class Eventos {
       'date': date,
       'location': location,
       'inscritos': inscritos, // Serializar inscrições
+      'geoLocation': geoLocation, 
     };
   }
 }

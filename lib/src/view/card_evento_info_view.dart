@@ -1,14 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 
-import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
+import 'package:presence_jor/src/controller/eventos_controller.dart';
 import 'package:presence_jor/src/controller/local_user_controller.dart';
+import 'package:presence_jor/src/controller/login_controller.dart';
 import 'package:presence_jor/src/model/google_maps_static_api.dart';
 import 'package:presence_jor/src/model/eventos.dart';
 import 'package:http/http.dart' as http;
+import 'package:presence_jor/src/view/util.dart';
 
 class Card_Evento_Info_View extends StatefulWidget {
   const Card_Evento_Info_View({super.key});
@@ -20,6 +24,7 @@ class Card_Evento_Info_View extends StatefulWidget {
 
 class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
   final EventosController controller = EventosController();
+  LoginController user = LoginController();
   Uint8List? webImage;
   String? imageName;
 
@@ -31,6 +36,21 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
   @override
   Widget build(BuildContext context) {
     final eventos = ModalRoute.of(context)!.settings.arguments as Eventos;
+    final url = GoogleMapStatic.buildMapUrl('${eventos.geoLocation.latitude},${eventos.geoLocation.longitude}');
+    EventosController eventosController = EventosController();
+
+  //
+  //Verifica a distácia do usuário
+  Future<double> verificarLocal() async {
+  
+  GetLocationUser _localization = await GetLocationUser().getLocationUserAtual();
+  double distanceInMeters = Geolocator.distanceBetween(_localization.lat, _localization.long, eventos.geoLocation.latitude, eventos.geoLocation.longitude);
+
+  return  distanceInMeters;
+}
+
+
+
 
     Future<void> pikckImage() async {
       final ImagePicker _pikck = ImagePicker();
@@ -106,22 +126,20 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                     ),
                     //
                     //Carregamento do mapa com local do user.
+                    Divider(
+                      color: Colors.black,
+                    ),
                     Center(
-                        child: 
-                        FutureBuilder<String>(
-                            future: imageUrl(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return CircularProgressIndicator();
-                              } else if (snapshot.hasError) {
-                                return Text('Erro: ${snapshot.error}');
-                              } else if (snapshot.hasData) {
-                                return Image.network(snapshot.data!);
-                              } else {
-                                return const Text('Nenhum dado disponível');
-                              }
-                            })
+                        child: Text(
+                          "Local do evento",
+                          style: const TextStyle(
+                            fontSize: 28,
+                            color: Colors.black,
+                          ),
+                        ),
+                    ),
+                    Center(
+                        child: Image.network(url)
                     ),
                     SizedBox(height: 5,),
                     Center(
@@ -150,7 +168,7 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                                 ),
                               ),
                           ),
-                  const SizedBox(height: 5,),
+                    SizedBox(height: 5,),
                     OutlinedButton.icon(
                         onPressed: () {
                           pikckImage();
@@ -160,7 +178,38 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
                           color:webImage == null? Colors.red: Colors.green[800],
                         ),
                         label: webImage ==null? Text('Comprove sua participação com uma imagem'): Text(imageName!)
-                        )
+                        ),
+                    SizedBox(height: 25,),
+                    
+                        FutureBuilder<QuerySnapshot>(
+                              future: user.getDataUser(user.idUsuarioLogado()),
+                              builder: (context, snapshot) {
+                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                  return Center(child: CircularProgressIndicator());
+                                } else if (snapshot.hasError) {
+                                  return Center(child: Text('Erro: ${snapshot.error}'));
+                                } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                                  print(user.idUsuarioLogado());
+                                  return Center(child: Text('Usuário não encontrado'));
+                                } else {
+                                  return ElevatedButton(
+                                        onPressed: () async {
+                                          double distance = await verificarLocal();
+                                          var userData = snapshot.data!.docs.first.data() as Map<String, dynamic>;
+                                            eventosController.adicionarInscrito(
+                                              eventos.title, 
+                                              eventos.description, 
+                                              userData['nome'], 
+                                              userData['codigo'], 
+                                              userData['email']
+                                            );
+                                            sucesso(context, "Aluno inscrito");
+                                        },
+                                        child: Text("Inscrito"),
+                                        );
+                                }
+                              },
+                            )
                   ],
                 ));
           }),
@@ -169,11 +218,9 @@ class _Card_Evento_Info_View extends State<Card_Evento_Info_View> {
 }
 
 Future<String> imageUrl() async {
-  GetLocationUser _localization =
-      await GetLocationUser().getLocationUserAtual();
+  GetLocationUser _localization = await GetLocationUser().getLocationUserAtual();
 
-  final url =
-      GoogleMapStatic.buildMapUrl('${_localization.lat},${_localization.long}');
+  final url = GoogleMapStatic.buildMapUrl('${_localization.lat},${_localization.long}');
   final response = await http.get(Uri.parse(url));
 
   if (response.statusCode == 200) {
@@ -182,3 +229,7 @@ Future<String> imageUrl() async {
     throw Exception('Failed to load image');
   }
 }
+
+
+
+

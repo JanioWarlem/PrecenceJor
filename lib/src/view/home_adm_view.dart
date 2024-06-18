@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:presence_jor/src/sample_feature/sample_item_list_view.dart';
 import 'package:presence_jor/src/settings/settings_view.dart';
 import 'package:presence_jor/src/view/criar_evento_view.dart';
 import 'package:presence_jor/src/view/eventos_view.dart';

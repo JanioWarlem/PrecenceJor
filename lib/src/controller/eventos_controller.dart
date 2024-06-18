@@ -18,6 +18,49 @@ class EventosController {
     }
   }
 
+
+ Future<void> adicionarInscrito(String nomeEvento, String descricaoEvento, String nomeAluno, String codigo, String email) async {
+    try {
+      // Query para encontrar o evento pelo nome e descrição
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('eventos')
+        .where('title', isEqualTo: nomeEvento)
+        .where('description', isEqualTo: descricaoEvento)
+        .get();
+      
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentSnapshot eventDoc = querySnapshot.docs.first;
+        DocumentReference eventRef = eventDoc.reference;
+
+        // Atualizar o campo inscritos com os detalhes do aluno
+        await eventRef.update({
+          'inscritos': FieldValue.arrayUnion([{
+            'nome': nomeAluno,
+            'codigo': codigo,
+            'email': email,
+          }])
+        });
+        print('Aluno inscrito com sucesso!');
+      } else {
+        print('Evento não encontrado.');
+      }
+    } catch (e) {
+      print('Erro ao inscrever aluno: $e');
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   //Listar eventos
   Stream<QuerySnapshot> listar() {
     return FirebaseFirestore.instance.collection('eventos').snapshots();
@@ -35,7 +78,6 @@ class EventosController {
 
   //Atualizar uma evento
   atualizar(context, id, Eventos t){
-
     FirebaseFirestore.instance.collection('evento')
       .doc(id)
       .update(t.toJson())

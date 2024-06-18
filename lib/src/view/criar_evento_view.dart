@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:googleapis/fitness/v1.dart';
-import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
+import 'package:presence_jor/src/controller/eventos_controller.dart';
 import 'package:presence_jor/src/model/eventos.dart';
 import 'package:presence_jor/src/view/home_adm_view.dart';
 import 'package:presence_jor/src/view/login_view.dart';
@@ -22,6 +23,9 @@ class _CirarEventoViewState extends State<CirarEventoView> {
   var txtDescription = TextEditingController();
   var txtlocation = TextEditingController();
   var txtDate = TextEditingController();
+  var txtLatitude = TextEditingController();
+  var txtLongitude = TextEditingController();
+
 
   final _formKey = GlobalKey<FormState>();
   
@@ -153,6 +157,16 @@ class _CirarEventoViewState extends State<CirarEventoView> {
                           },
                       ),
                       SizedBox(height: 15),
+                      TextField(
+                          controller: txtLatitude,
+                          decoration: InputDecoration(labelText: 'Latitude'),
+                          keyboardType: TextInputType.number,
+                        ),
+                      TextField(
+                        controller: txtLongitude,
+                        decoration: InputDecoration(labelText: 'Longitude'),
+                        keyboardType: TextInputType.number,
+                      ),
                       SizedBox(height: 40), 
                 ],
               ),
@@ -184,14 +198,24 @@ class _CirarEventoViewState extends State<CirarEventoView> {
                               } else {
                                 throw Exception('Data não pode estar vazia');
                               }
-                              final evento = Eventos(
-                                title: txtTitle.text,
-                                description: txtDescription.text,
-                                date: dateTime,
-                                location: txtlocation.text,
-                                inscritos: {}, // Iniciando como um mapa vazio
-                              );
-                              await EventosController().adicionar(context, evento);
+                              final latitude = double.tryParse(txtLatitude.text);
+                              final longitude = double.tryParse(txtLongitude.text);
+                              final geoPoint;
+                              if (latitude != null && longitude != null){
+                                  geoPoint = GeoPoint(latitude, longitude);
+                                  
+                                  final evento = Eventos(
+                                  title: txtTitle.text,
+                                  description: txtDescription.text,
+                                  date: dateTime,
+                                  location: txtlocation.text,
+                                  inscritos: {}, // Iniciando como um mapa vazio
+                                  geoLocation: geoPoint,
+                                );
+                                await EventosController().adicionar(context, evento);
+                              }
+
+                              
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(

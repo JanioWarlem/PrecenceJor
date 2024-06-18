@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
+import 'package:presence_jor/src/controller/eventos_controller.dart';
 import 'package:presence_jor/src/model/eventos.dart';
 
 
@@ -87,7 +87,7 @@ class _Eventos_view extends State<Eventos_view> {
                                     ),
                                   ), //(doc['date'] as Timestamp).toDate().hour.toString()
                           onTap: () {
-                            Eventos eventos = Eventos(date: (doc['date']).toDate(), title: doc['title'], description: doc['description'], location:  doc['location']);
+                            Eventos eventos = Eventos(date: (doc['date']).toDate(), title: doc['title'], description: doc['description'], location:  doc['location'], geoLocation:  doc['geoLocation']);
                             Navigator.pushNamed(
                               context,
                               'Confirmar_Presença',
