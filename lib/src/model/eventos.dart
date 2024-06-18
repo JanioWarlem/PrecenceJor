@@ -5,12 +5,14 @@ class Eventos {
   final String description;
   final DateTime date;
   final String location;
+  Map<String, dynamic> inscritos; // Campo para inscrições
 
   Eventos({
     required this.title,
     required this.description,
     required this.date,
     required this.location,
+    this.inscritos = const {}, // Inicializa como um mapa vazio
   });
 
   // Transformar um JSON em um objeto
@@ -20,6 +22,7 @@ class Eventos {
       description: json['description'] as String,
       date: (json['date'] as Timestamp).toDate(),
       location: json['location'] as String,
+      inscritos: json['inscritos'] as Map<String, dynamic>? ?? {}, // Desserializar inscrições ou inicializar como vazio
     );
   }
 
@@ -30,6 +33,7 @@ class Eventos {
       'description': description,
       'date': date,
       'location': location,
+      'inscritos': inscritos, // Serializar inscrições
     };
   }
 }

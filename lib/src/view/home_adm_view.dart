@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:presence_jor/src/sample_feature/sample_item_list_view.dart';
 import 'package:presence_jor/src/settings/settings_view.dart';
+import 'package:presence_jor/src/view/criar_evento_view.dart';
 import 'package:presence_jor/src/view/eventos_view.dart';
 import '../controller/login_controller.dart';
 
@@ -53,7 +54,7 @@ class _HomeAdmViewState extends State<HomeAdmView> {
           'Criar evento', 
           Icon(Icons.add_box_outlined), 
           Icon(Icons.add_box),
-          SampleItemListView(),
+          CirarEventoView(),
         ),
 ];
 

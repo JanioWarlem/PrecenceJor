@@ -1,25 +1,62 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
+import 'package:googleapis/fitness/v1.dart';
+import 'package:presence_jor/src/controller/lista_eventos_controller.dart';
+import 'package:presence_jor/src/model/eventos.dart';
+import 'package:presence_jor/src/view/home_adm_view.dart';
 import 'package:presence_jor/src/view/login_view.dart';
 
-import '../controller/login_controller.dart';
 
 class CirarEventoView extends StatefulWidget {
   const CirarEventoView({super.key});
-  static const routeName = 'Cadastrar';
+  static const routeName = 'cadastrtar_eventos';
 
   @override
   State<CirarEventoView> createState() => _CirarEventoViewState();
 }
 
 class _CirarEventoViewState extends State<CirarEventoView> {
-  var txtTitulo = TextEditingController();
-  var txtDescricao = TextEditingController();
-  var txtSenha = TextEditingController();
-  var txtCodigo = TextEditingController();
-  var txtCurso = TextEditingController();
+
+  var txtTitle= TextEditingController();
+  var txtDescription = TextEditingController();
+  var txtlocation = TextEditingController();
+  var txtDate = TextEditingController();
+
   final _formKey = GlobalKey<FormState>();
+  
+
+  //Criacao co calendário
+  Future<void> _selectData() async {
+    DateTime? _pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (_pickedDate != null) {
+      TimeOfDay? _pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (_pickedTime != null) {
+        final DateTime _pickedDateTime = DateTime(
+          _pickedDate.year,
+          _pickedDate.month,
+          _pickedDate.day,
+          _pickedTime.hour,
+          _pickedTime.minute,
+        );
+
+        setState(() {
+          txtDate.text = _pickedDateTime.toString();
+        });
+      }
+    }
+  }
+
   
 
   @override
@@ -30,124 +67,92 @@ class _CirarEventoViewState extends State<CirarEventoView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Center(
-                  child: Text(
-                    'Precence',
-                    style: TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.bold,
-                      color: const Color.fromARGB(255, 17, 17, 17),
-                    ),
-                  ),
-                ),
-                Center(
-                  child: Text(
-                    'Jor',
-                    style: TextStyle(
-                      fontSize: 60,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.blue.shade900,
-                    ),
-                  ),
-                ),
-            ],
-          ),
-          
-        ),
-        
+
       body: Padding(
         padding: EdgeInsets.fromLTRB(30, 50, 30, 50),
         child: Column(
           children: [
-            Text(
-              'Criar Conta',
-              style: TextStyle(fontSize: 40),
+            Row(
+              children: [
+                Text(
+                'Criar evento',
+                style: TextStyle(fontSize: 26),
+                ),
+              ],
             ),
             SizedBox(height: 60),
             Form(
               key: _formKey,
               child: Column(
                 children: [
+                  //titulo
                       TextFormField(
-                        controller: txtNome,
+                        controller: txtTitle,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Digite um nome';
+                            return 'Digite um título';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          labelText: 'Nome',
+                          labelText: 'Título',
                           prefixIcon: Icon(Icons.person),
                           border: OutlineInputBorder()
                         ),
                       ),
                       SizedBox(height: 15),
+                      //descricao
                       TextFormField(
-                        controller: txtEmail,
+                        controller: txtDescription,
                         validator: (value) {
-                          final regex = RegExp(r'^[a-zA-Z0-9._%+-]+@(sou\.unaerp\.edu\.br)$');
-                          final regex2 = RegExp(r'^[a-zA-Z0-9._%+-]+@(unaerp\.br)$');
                           if (value == null || value.isEmpty) {
-                            return 'Digite um email institucional';
-                          }else if (regex.hasMatch(value) == false && regex2.hasMatch(value) == false) {
-                            return 'Aceitos somente @unaerp.br ou @sou.unaerp.edu.br';
+                            return 'Digite uma drecrição';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          labelText: 'Email',
+                          labelText: 'Drecrição',
                           prefixIcon: Icon(Icons.email),
                           border: OutlineInputBorder()
                           ),
                       ),
+                      //local
                       SizedBox(height: 15),
                       TextFormField(
-                        controller: txtSenha,
+                        controller: txtlocation,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Digite a senha';
-                          }
-                          return null;
-                        },
-                        obscureText: true,
-                        decoration: InputDecoration(
-                          labelText: 'Senha',
-                          prefixIcon: Icon(Icons.password),
-                          border: OutlineInputBorder()),
-                      ),
-                      SizedBox(height: 15),
-                      TextFormField(
-                        controller: txtCodigo,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Precisamos do seu código';
+                            return 'Precisamos de um local para o evento';
                           }
                           return null;
                         },
                         decoration: InputDecoration(
-                          labelText: 'Código',
+                          labelText: 'Local',
                           prefixIcon: Icon(Icons.badge),
                           border: OutlineInputBorder()),
                       ),
                       SizedBox(height: 15),
+                      //data
                       TextFormField(
-                          controller: txtCurso,
-                          validator: (value) {
+                        controller: txtDate,
+                        validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Nos informe seu código';
+                            return 'Digite a data';
                           }
                           return null;
                         },
-                          decoration: InputDecoration(
-                            labelText: 'Curso',
-                            prefixIcon: Icon(Icons.school),
-                            border: OutlineInputBorder()),
-                        ),
+                        decoration: InputDecoration(
+                            labelText: 'Data',
+                            prefixIcon: Icon(Icons.calendar_today),
+                            border: OutlineInputBorder()
+                            //focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.blue))
+                          ),
+                          readOnly: true,
+                          onTap: () {
+                            _selectData();
+                          },
+                      ),
+                      SizedBox(height: 15),
                       SizedBox(height: 40), 
                 ],
               ),
@@ -157,7 +162,7 @@ class _CirarEventoViewState extends State<CirarEventoView> {
               children: [
                 TextButton(
                   onPressed: () {
-                    Navigator.restorablePopAndPushNamed(context, LoginView.routeName);
+                    Navigator.popAndPushNamed(context, HomeAdmView .routeName);
                   },
                   child: Text(
                     'cancelar',
@@ -172,18 +177,25 @@ class _CirarEventoViewState extends State<CirarEventoView> {
                   onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                             try {
-                              await LoginController().criarConta(
-                                context,
-                                txtNome.text,
-                                txtEmail.text,
-                                txtSenha.text,
-                                txtCodigo.text,
-                                txtCurso.text,
+                               // Converter txtDate.text para DateTime
+                              DateTime dateTime;
+                              if (txtDate.text.isNotEmpty) {
+                                dateTime = DateTime.parse(txtDate.text);
+                              } else {
+                                throw Exception('Data não pode estar vazia');
+                              }
+                              final evento = Eventos(
+                                title: txtTitle.text,
+                                description: txtDescription.text,
+                                date: dateTime,
+                                location: txtlocation.text,
+                                inscritos: {}, // Iniciando como um mapa vazio
                               );
+                              await EventosController().adicionar(context, evento);
                             } catch (e) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content: Text('Erro ao criar conta: $e'),
+                                  content: Text('Erro ao Adicionar evento: $e'),
                                 ),
                               );
                             }

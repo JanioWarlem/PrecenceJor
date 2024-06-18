@@ -127,7 +127,7 @@ class _PoliticaPrivacidadeView extends State<PoliticaPrivacidadeView> {
                   child: InkWell(
                     splashColor: Color.fromARGB(255, 132, 174, 237), // Splash color
                     onTap: () {
-                      Navigator.popAndPushNamed(context, 'Home');
+                      Navigator.pop(context);
                     },
                     child: SizedBox(
                       width: 56,
