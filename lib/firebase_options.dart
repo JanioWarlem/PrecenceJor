@@ -41,22 +41,22 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyBC71FGZ6ruI2T1kVElNO259HhY9D5iTjk',
-    appId: '1:986950434792:web:f08d81d1ad2fffe35d2e5d',
-    messagingSenderId: '986950434792',
+    apiKey: 'Cole aqui',
+    appId: 'Cole aqui',
+    messagingSenderId: Cole aqui',
     projectId: 'presencejor',
     authDomain: 'presencejor.firebaseapp.com',
     storageBucket: 'presencejor.appspot.com',
-    measurementId: 'G-ZY6ZX31Q4V',
+    measurementId: 'v',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyBxB1P3DpWoOiISwcHRZE_xRikLF0WTX8c',
-    appId: '1:986950434792:ios:9c163189951077525d2e5d',
-    messagingSenderId: '986950434792',
+    apiKey: 'Cole aqui',
+    appId: 'Cole aqui',
+    messagingSenderId: 'Cole aqui',
     projectId: 'presencejor',
     storageBucket: 'presencejor.appspot.com',
-    iosClientId: '986950434792-13cnj6p68ll5kvq4gavcl24js6ls70gt.apps.googleusercontent.com',
+    iosClientId: 'Cole aqui',
     iosBundleId: 'com.example.presenceJor',
   );
 
@@ -71,21 +71,21 @@ class DefaultFirebaseOptions {
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBVrQq8rlpksWNb9Ejgy96Ajj0TxnPB4VA',
-    appId: '1:986950434792:android:19dc94af8e15cf555d2e5d',
-    messagingSenderId: '986950434792',
+    apiKey: Cole aqui',
+    appId: 'Cole aqui',
+    messagingSenderId: 'Cole aqui',
     projectId: 'presencejor',
     storageBucket: 'presencejor.appspot.com',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyBC71FGZ6ruI2T1kVElNO259HhY9D5iTjk',
-    appId: '1:986950434792:web:1d05c5a9c9a0de7e5d2e5d',
-    messagingSenderId: '986950434792',
+    apiKey: 'Cole aqui',
+    appId: 'Cole aqui',
+    messagingSenderId: 'Cole aqui',
     projectId: 'presencejor',
     authDomain: 'presencejor.firebaseapp.com',
     storageBucket: 'presencejor.appspot.com',
-    measurementId: 'G-PF594MNHLV',
+    measurementId: 'Cole aqui',
   );
 
 }
